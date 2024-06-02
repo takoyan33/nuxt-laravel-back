@@ -11,7 +11,8 @@ class StoreTaskRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        //有効
+        return true;
     }
 
     /**
@@ -21,8 +22,9 @@ class StoreTaskRequest extends FormRequest
      */
     public function rules(): array
     {
+        //バリデーションルールを設定
         return [
-            //
+            'name' => 'required|string|max:255'
         ];
     }
 }

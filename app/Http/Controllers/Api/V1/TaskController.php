@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
+use App\Http\Resources\TaskResource;
 use App\Models\Task;
 
 class TaskController extends Controller
@@ -14,16 +15,8 @@ class TaskController extends Controller
      */
     public function index()
     {
-        //全てのタスクを返す
-        return Task::all();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        //Resourceを使ってデータを返す
+        return TaskResource::collection(Task::all());
     }
 
     /**
@@ -31,7 +24,11 @@ class TaskController extends Controller
      */
     public function store(StoreTaskRequest $request)
     {
-        //
+        //リクエストのバリデーションを通過したデータを保存
+        $task = Task::create($request->validated());
+
+        //Resourceを使ってデータを返す
+        return TaskResource::make($task);
     }
 
     /**
@@ -39,15 +36,8 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Task $task)
-    {
-        //
+        //Resourceを使って特定のデータを返す
+        return TaskResource::make($task);
     }
 
     /**
@@ -55,7 +45,11 @@ class TaskController extends Controller
      */
     public function update(UpdateTaskRequest $request, Task $task)
     {
-        //
+        //リクエストのバリデーションを通過したデータで更新
+        $task->update($request->validated());
+
+        //Resourceを使ってデータを返す
+        return TaskResource::make($task);
     }
 
     /**
@@ -63,6 +57,9 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        //
+        //データを削除
+        $task->delete();
+        //空のデータを返す
+        return response()->noContent();
     }
 }
