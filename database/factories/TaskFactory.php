@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Priority;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Task>
@@ -19,6 +20,7 @@ class TaskFactory extends Factory
         return [
             'name' => fake()->sentence(),
             'is_completed' => rand(0, 1),
+            'priority_id' => rand(0,1) ? null : Priority::pluck('id')->random(),
         ];
     }
 }

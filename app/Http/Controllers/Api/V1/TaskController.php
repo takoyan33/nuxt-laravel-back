@@ -16,7 +16,7 @@ class TaskController extends Controller
     public function index()
     {
         //Resourceを使ってデータを返す
-        return TaskResource::collection(Task::all());
+        return TaskResource::collection(Task::with('priority')->get());
     }
 
     /**
@@ -26,6 +26,8 @@ class TaskController extends Controller
     {
         //リクエストのバリデーションを通過したデータを保存
         $task = Task::create($request->validated());
+        //リレーションをロード
+        $task->load('priority');
 
         //Resourceを使ってデータを返す
         return TaskResource::make($task);
